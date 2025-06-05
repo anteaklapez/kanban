@@ -1,30 +1,20 @@
-package com.hivetech.kanban.model;
+package com.hivetech.kanban.dto;
 
-import com.hivetech.kanban.validator.EnumValidator;
-import jakarta.persistence.*;
 import java.util.UUID;
 
-@Entity
-@Table(name =  "\"tasks\"")
-public class Task {
-    @Id
-    @Column(name = "id", updatable = false, nullable = false)
-    @GeneratedValue(generator = "UUID")
+public class TaskResponseDTO {
     private UUID id;
     private String title;
     private String description;
-    @Enumerated(EnumType.STRING)
-    @EnumValidator(enumClass = Status.class)
-    private Status status;
-    @Enumerated(EnumType.STRING)
-    @EnumValidator(enumClass = Priority.class)
-    private Priority priority;
-    @Version
+    private String status;
+    private String priority;
     private int version;
 
-    public Task(){}
+    public TaskResponseDTO() {
+    }
 
-    public Task(String title, String description, Status status, Priority priority, int version) {
+    public TaskResponseDTO(UUID id, String title, String description, String status, String priority, int version) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -56,19 +46,19 @@ public class Task {
         this.description = description;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Priority getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 

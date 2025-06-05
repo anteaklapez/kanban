@@ -3,13 +3,16 @@ package com.hivetech.kanban.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.hivetech.kanban.dao.TaskDao;
-import com.hivetech.kanban.model.Task;
+import com.hivetech.kanban.dto.TaskRequestDTO;
+import com.hivetech.kanban.dto.TaskResponseDTO;
+import com.hivetech.kanban.model.Status;
 import com.hivetech.kanban.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
 
 @RestController
@@ -22,27 +25,28 @@ public class TaskController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Iterable<Task>> getAllTasks(){
-        return ResponseEntity.ok(taskService.getAllTasks());
+    public ResponseEntity<Page<TaskResponseDTO>> getAllTasks(@RequestParam(required = false) Status status,
+                                                             @PageableDefault(size = 10) Pageable pageable){
+        return ResponseEntity.ok(taskService.getAllTasks(status, pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable UUID id){
+    public ResponseEntity<TaskResponseDTO> getTask(@PathVariable UUID id){
         return ResponseEntity.ok(taskService.getTask(id));
     }
 
     @PostMapping("")
-    public ResponseEntity<Task> createTask(@RequestBody TaskDao task){
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskRequestDTO task){
         return ResponseEntity.ok(taskService.createTask(task));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> putTask(@PathVariable UUID id, @RequestBody TaskDao task) {
+    public ResponseEntity<TaskResponseDTO> putTask(@PathVariable UUID id, @RequestBody TaskRequestDTO task) {
         return ResponseEntity.ok(taskService.updateTask(id, task));
     }
 
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<Task> patchTask(@PathVariable UUID id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<TaskResponseDTO> patchTask(@PathVariable UUID id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
         return ResponseEntity.ok(taskService.patchTask(id, patch));
     }
 

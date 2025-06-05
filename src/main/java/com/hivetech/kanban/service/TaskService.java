@@ -5,33 +5,48 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.hivetech.kanban.dao.TaskDao;
+import com.hivetech.kanban.dto.TaskRequestDTO;
+import com.hivetech.kanban.dto.TaskResponseDTO;
 import com.hivetech.kanban.model.Priority;
 import com.hivetech.kanban.model.Status;
 import com.hivetech.kanban.model.Task;
 import com.hivetech.kanban.repository.TaskRepository;
+import com.hivetech.kanban.util.TaskDTOMapperUtil;
+import com.hivetech.kanban.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 import java.util.UUID;
-
-// TODO: Validation!!
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final TaskDTOMapperUtil taskDTOMapperUtil;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskDTOMapperUtil taskDTOMapperUtil) {
         this.taskRepository = taskRepository;
+        this.taskDTOMapperUtil = taskDTOMapperUtil;
     }
 
-    public Iterable<Task> getAllTasks(){
-        return this.taskRepository.findAll();
+    public Page<TaskResponseDTO> getAllTasks(Status status, Pageable pageable){
+        Page<Task> page = (status != null)
+                ? taskRepository.findByStatus(status, pageable)
+                : taskRepository.findAll(pageable);
+
+        return page.map(taskDTOMapperUtil::toDTO);
     }
 
-    public Task getTask(UUID id){
-        return this.taskRepository.findById(id).get();
+    public TaskResponseDTO getTask(UUID id) throws ResourceNotFoundException{
+        Optional<Task> optionalTask = this.taskRepository.findById(id);
+        if(optionalTask.isPresent()){
+            Task task = optionalTask.get();
+            return taskDTOMapperUtil.toDTO(task);
+        } else
+            throw new ResourceNotFoundException("Task with given ID does not exist.");
     }
 
-    public Task createTask(TaskDao task){
+    public TaskResponseDTO createTask(TaskRequestDTO task){
         Task newTask = new Task();
         newTask.setTitle(task.getTitle());
         newTask.setDescription(task.getDescription());
@@ -39,29 +54,39 @@ public class TaskService {
         newTask.setPriority(Priority.valueOf(task.getPriority().toUpperCase()));
 
         this.taskRepository.save(newTask);
-        return newTask;
+
+        return taskDTOMapperUtil.toDTO(newTask);
     }
 
-    public Task updateTask(UUID id, TaskDao task) {
-        Task oldTask = this.taskRepository.findById(id).get();
+    public TaskResponseDTO updateTask(UUID id, TaskRequestDTO taskRequestDTO) throws ResourceNotFoundException{
+        Optional<Task> optionalTask = this.taskRepository.findById(id);
 
-        oldTask.setTitle(task.getTitle());
-        oldTask.setDescription(task.getDescription());
-        oldTask.setStatus(Status.valueOf(task.getStatus().toUpperCase()));
-        oldTask.setPriority(Priority.valueOf(task.getPriority().toUpperCase()));
+        if(optionalTask.isPresent()){
+            Task task = optionalTask.get();
 
-        this.taskRepository.save(oldTask);
+            task.setTitle(taskRequestDTO.getTitle());
+            task.setDescription(taskRequestDTO.getDescription());
+            task.setStatus(Status.valueOf(taskRequestDTO.getStatus().toUpperCase()));
+            task.setPriority(Priority.valueOf(taskRequestDTO.getPriority().toUpperCase()));
 
-        return oldTask;
+            this.taskRepository.save(task);
+
+            return taskDTOMapperUtil.toDTO(task);
+        } else
+            throw new ResourceNotFoundException("Task with given ID does not exist.");
     }
 
-    public Task patchTask(UUID id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
-        Task task = this.taskRepository.findById(id).get();
+    public TaskResponseDTO patchTask(UUID id, JsonPatch patch) throws JsonPatchException, JsonProcessingException, ResourceNotFoundException {
+        Optional<Task> optionalTask = this.taskRepository.findById(id);
 
-        Task taskPatched = applyPatchToTask(patch, task);
-        this.taskRepository.save(taskPatched);
+        if(optionalTask.isPresent()){
+            Task taskPatched = applyPatchToTask(patch, optionalTask.get());
 
-        return taskPatched;
+            this.taskRepository.save(taskPatched);
+
+            return taskDTOMapperUtil.toDTO(taskPatched);
+        } else
+            throw new ResourceNotFoundException("Task with given ID does not exist.");
     }
 
     public void deleteTask(UUID id){

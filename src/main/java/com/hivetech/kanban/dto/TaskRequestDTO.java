@@ -1,16 +1,26 @@
-package com.hivetech.kanban.dao;
+package com.hivetech.kanban.dto;
 
-public class TaskDao {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class TaskRequestDTO {
+    @NotBlank
+    @Size(min = 3, max = 50)
     private String title;
+    @Size(max = 1000)
     private String description;
+    @NotBlank
     private String status;
+    @NotBlank
     private String priority;
+    private int version;
 
-    public TaskDao(String title, String description, String status, String priority) {
+    public TaskRequestDTO(String title, String description, String status, String priority, int version) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.version = version;
     }
 
     public String getTitle() {
@@ -43,5 +53,13 @@ public class TaskDao {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

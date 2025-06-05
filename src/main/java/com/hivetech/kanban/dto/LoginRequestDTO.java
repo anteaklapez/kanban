@@ -1,10 +1,16 @@
-package com.hivetech.kanban.dao;
+package com.hivetech.kanban.dto;
 
-public class UserLoginDao {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public class LoginRequestDTO {
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
     private String password;
 
-    public UserLoginDao(String email, String password) {
+    public LoginRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
