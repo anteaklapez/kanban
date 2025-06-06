@@ -14,10 +14,8 @@ public class Task {
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
-    @EnumValidator(enumClass = Status.class)
     private Status status;
     @Enumerated(EnumType.STRING)
-    @EnumValidator(enumClass = Priority.class)
     private Priority priority;
     @Version
     private int version;

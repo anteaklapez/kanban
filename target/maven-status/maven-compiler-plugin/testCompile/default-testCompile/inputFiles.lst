@@ -1,3 +1,9 @@
 /Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/KanbanApplicationTests.java
 /Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/TestKanbanApplication.java
 /Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/TestcontainersConfiguration.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/integration/TaskServiceIntegrationTest.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/integration/UserServiceIntegrationTest.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/service/TaskServiceTest.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/service/UserServiceTest.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/util/TaskDTOMapperUtilTest.java
+/Users/anteaklapez/IdeaProjects/kanban/src/test/java/com/hivetech/kanban/util/UserDTOMapperUtilTest.java

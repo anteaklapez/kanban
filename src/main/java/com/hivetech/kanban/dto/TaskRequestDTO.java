@@ -1,5 +1,7 @@
 package com.hivetech.kanban.dto;
 
+import com.hivetech.kanban.model.Status;
+import com.hivetech.kanban.validator.EnumValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -10,8 +12,10 @@ public class TaskRequestDTO {
     @Size(max = 1000)
     private String description;
     @NotBlank
+    @EnumValidator(enumClass = Status.class)
     private String status;
     @NotBlank
+    @EnumValidator(enumClass = Status.class)
     private String priority;
     private int version;
 

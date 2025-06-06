@@ -1,3 +1,9 @@
-com/hivetech/kanban/TestcontainersConfiguration.class
+com/hivetech/kanban/service/TaskServiceTest.class
 com/hivetech/kanban/TestKanbanApplication.class
 com/hivetech/kanban/KanbanApplicationTests.class
+com/hivetech/kanban/integration/UserServiceIntegrationTest.class
+com/hivetech/kanban/service/UserServiceTest.class
+com/hivetech/kanban/util/UserDTOMapperUtilTest.class
+com/hivetech/kanban/integration/TaskServiceIntegrationTest.class
+com/hivetech/kanban/TestcontainersConfiguration.class
+com/hivetech/kanban/util/TaskDTOMapperUtilTest.class

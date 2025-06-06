@@ -58,6 +58,6 @@ public class UserService {
 
         userRepository.save(newUser);
 
-        return this.authenticateUser(new LoginRequestDTO(newUser.getEmail(), newUser.getPassword()));
+        return this.authenticateUser(new LoginRequestDTO(newUser.getEmail(), user.getPassword()));
     }
 }
