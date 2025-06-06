@@ -13,10 +13,10 @@ public class RegisterRequestDTO {
     private String lastName;
     @NotBlank
     @Email
-    @Size(min = 3, max = 50)
+    @Size(max = 254)
     private String email;
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 8, max = 128)
     private String password;
 
     public RegisterRequestDTO(){}
