@@ -161,7 +161,6 @@ class TaskServiceTest {
         verify(taskRepository).deleteById(id);
     }
 
-    // PATCH scenario: testing patch logic is tricky; you could test applyPatchToTask separately.
     @Test
     void patchTask_nonExistingId_shouldThrow() {
         UUID id = UUID.randomUUID();
