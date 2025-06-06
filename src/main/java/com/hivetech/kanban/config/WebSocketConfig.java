@@ -1,6 +1,6 @@
 package com.hivetech.kanban.config;
 
-import com.hivetech.kanban.util.JwtHandshakeInterceptor;
+import com.hivetech.kanban.interceptor.WebSocketHandshakeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,17 +11,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final JwtHandshakeInterceptor jwtHandshakeInterceptor;
+    private final WebSocketHandshakeInterceptor webSocketHandshakeInterceptor;
 
-    public WebSocketConfig(JwtHandshakeInterceptor jwtHandshakeInterceptor) {
-        this.jwtHandshakeInterceptor = jwtHandshakeInterceptor;
+    public WebSocketConfig(WebSocketHandshakeInterceptor webSocketHandshakeInterceptor) {
+        this.webSocketHandshakeInterceptor = webSocketHandshakeInterceptor;
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws")
-                .addInterceptors(jwtHandshakeInterceptor)
+                .addInterceptors(webSocketHandshakeInterceptor)
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }

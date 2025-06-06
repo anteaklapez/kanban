@@ -1,6 +1,7 @@
-package com.hivetech.kanban.util;
+package com.hivetech.kanban.interceptor;
 
-import com.hivetech.kanban.service.KanbanUserDetailsService;
+import com.hivetech.kanban.service.UserDetailService;
+import com.hivetech.kanban.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -15,12 +16,12 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import java.util.Map;
 
 @Component
-public class JwtHandshakeInterceptor implements HandshakeInterceptor {
+public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
     private final JwtUtil jwtUtil;
-    private final KanbanUserDetailsService userDetailsService;
+    private final UserDetailService userDetailsService;
 
-    public JwtHandshakeInterceptor(JwtUtil jwtUtil, KanbanUserDetailsService userDetailsService) {
+    public WebSocketHandshakeInterceptor(JwtUtil jwtUtil, UserDetailService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }

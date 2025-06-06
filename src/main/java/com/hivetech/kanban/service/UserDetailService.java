@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class KanbanUserDetailsService implements UserDetailsService {
+public class UserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public KanbanUserDetailsService(UserRepository userRepository){
+    public UserDetailService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 

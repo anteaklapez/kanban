@@ -1,6 +1,5 @@
 package com.hivetech.kanban.model;
 
-import com.hivetech.kanban.validator.EnumValidator;
 import jakarta.persistence.*;
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package com.hivetech.kanban.security;
 
-import com.hivetech.kanban.service.KanbanUserDetailsService;
+import com.hivetech.kanban.service.UserDetailService;
 import com.hivetech.kanban.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,12 +23,12 @@ import java.util.logging.Logger;
  */
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
-    private final KanbanUserDetailsService userService;
+    private final UserDetailService userService;
     private final JwtUtil jwtUtil;
 
     Logger logger = Logger.getLogger(String.valueOf(AuthTokenFilter.class));
 
-    public AuthTokenFilter(KanbanUserDetailsService userService, JwtUtil jwtUtil){
+    public AuthTokenFilter(UserDetailService userService, JwtUtil jwtUtil){
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }

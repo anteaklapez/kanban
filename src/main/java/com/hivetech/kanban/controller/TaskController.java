@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -43,9 +45,10 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @Cacheable(cacheNames = "tasks", key = "T(java.util.Objects).toString(#status) + '::' + #pageable.pageNumber + '-' + #pageable.pageSize")
     @GetMapping("")
     public ResponseEntity<Page<TaskResponseDTO>> getAllTasks(@RequestParam(required = false) Status status,
-                                                             @PageableDefault(size = 10) Pageable pageable) {
+                                                             @PageableDefault(size = 100) Pageable pageable) {
         return ResponseEntity.ok(taskService.getAllTasks(status, pageable));
     }
 
@@ -56,6 +59,7 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @Cacheable(cacheNames = "task", key = "#id")
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> getTask(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getTask(id));
@@ -68,16 +72,14 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @CacheEvict(cacheNames = { "tasks", "task" }, allEntries = true)
     @PostMapping("")
     public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskRequestDTO task) {
-        // 1) Create the task
         TaskResponseDTO created = taskService.createTask(task);
 
-        // 2) Emit WebSocket event
         messagingTemplate.convertAndSend("/topic/tasks",
                 new TaskWebSocketEvent("CREATED", created));
 
-        // 3) Return the created DTO
         return ResponseEntity.ok(created);
     }
 
@@ -89,16 +91,14 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @CacheEvict(cacheNames = { "tasks", "task" }, key = "#id", allEntries = true)
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> putTask(@PathVariable UUID id, @RequestBody TaskRequestDTO task) {
-        // 1) Perform the update
         TaskResponseDTO updated = taskService.updateTask(id, task);
 
-        // 2) Emit WebSocket event
         messagingTemplate.convertAndSend("/topic/tasks",
                 new TaskWebSocketEvent("UPDATED", updated));
 
-        // 3) Return the updated DTO
         return ResponseEntity.ok(updated);
     }
 
@@ -110,17 +110,15 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @CacheEvict(cacheNames = { "tasks", "task" }, key = "#id", allEntries = true)
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
     public ResponseEntity<TaskResponseDTO> patchTask(@PathVariable UUID id, @RequestBody JsonPatch patch)
             throws JsonPatchException, JsonProcessingException {
-        // 1) Perform the patch
         TaskResponseDTO patched = taskService.patchTask(id, patch);
 
-        // 2) Emit WebSocket event
         messagingTemplate.convertAndSend("/topic/tasks",
                 new TaskWebSocketEvent("UPDATED", patched));
 
-        // 3) Return the patched DTO
         return ResponseEntity.ok(patched);
     }
 
@@ -131,16 +129,14 @@ public class TaskController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @CacheEvict(cacheNames = { "tasks", "task" }, key = "#id", allEntries = true)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable UUID id) {
-        // 1) Delete from service
         taskService.deleteTask(id);
 
-        // 2) Emit WebSocket event (sending just the ID of the deleted task)
         messagingTemplate.convertAndSend("/topic/tasks",
                 new TaskWebSocketEvent("DELETED", id));
 
-        // 3) Return no-content
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

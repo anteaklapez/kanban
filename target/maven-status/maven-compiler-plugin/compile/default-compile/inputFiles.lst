@@ -1,5 +1,8 @@
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/KanbanApplication.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/config/SecurityConfig.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/config/WebConfig.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/config/WebSocketConfig.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/config/WebSocketSecurityConfig.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/controller/AuthController.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/controller/TaskController.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/AuthResponseDTO.java
@@ -8,9 +11,11 @@
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/RegisterRequestDTO.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/TaskRequestDTO.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/TaskResponseDTO.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/TaskWebSocketEvent.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/dto/UserResponseDTO.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/exception/ResourceNotFoundException.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/exceptionhandler/GlobalExceptionHandler.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/interceptor/WebSocketHandshakeInterceptor.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/model/Priority.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/model/Status.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/model/Task.java
@@ -19,8 +24,8 @@
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/repository/UserRepository.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/security/AuthEntryPointJwt.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/security/AuthTokenFilter.java
-/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/service/KanbanUserDetailsService.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/service/TaskService.java
+/Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/service/UserDetailService.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/service/UserService.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/util/DTOMapperUtil.java
 /Users/anteaklapez/IdeaProjects/kanban/src/main/java/com/hivetech/kanban/util/JwtUtil.java
