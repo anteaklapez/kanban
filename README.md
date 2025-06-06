@@ -293,6 +293,7 @@ This project was developed as a technical assessment task for the **HiveTech** i
 ---
 
 **Author**: Antea Klapež 
+
 **Version**: 0.0.1-SNAPSHOT  
 **Spring Boot**: 3.5.0  
 **Java**: 21
