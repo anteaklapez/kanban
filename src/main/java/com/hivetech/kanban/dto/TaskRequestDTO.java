@@ -15,6 +15,8 @@ public class TaskRequestDTO {
     private String priority;
     private int version;
 
+    public TaskRequestDTO(){}
+
     public TaskRequestDTO(String title, String description, String status, String priority, int version) {
         this.title = title;
         this.description = description;

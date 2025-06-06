@@ -2,7 +2,6 @@ package com.hivetech.kanban.service;
 
 import com.hivetech.kanban.model.User;
 import com.hivetech.kanban.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +13,6 @@ import java.util.Collections;
 public class KanbanUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    @Autowired
     public KanbanUserDetailsService(UserRepository userRepository){
         this.userRepository = userRepository;
     }

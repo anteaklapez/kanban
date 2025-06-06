@@ -19,6 +19,8 @@ public class RegisterRequestDTO {
     @Size(min = 3, max = 50)
     private String password;
 
+    public RegisterRequestDTO(){}
+
     public RegisterRequestDTO(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

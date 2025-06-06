@@ -6,7 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     Logger logger = Logger.getLogger(String.valueOf(AuthTokenFilter.class));
 
-    @Autowired
     public AuthTokenFilter(KanbanUserDetailsService userService, JwtUtil jwtUtil){
         this.userService = userService;
         this.jwtUtil = jwtUtil;
